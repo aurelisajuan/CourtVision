@@ -12,14 +12,14 @@ export default function Home() {
       <Navbar />
 
       <main className="relative z-10 flex flex-col items-start justify-center h-screen container mx-auto px-4">
-        <h1 className="text-white text-5xl lg:text-7xl font-bold uppercase leading-tight mt-72">
+        <h1 className="text-white text-5xl lg:text-8xl font-black uppercase leading-tight mt-72">
           The Best 3D
           <br />
           AI Replay
         </h1>
 
         <Link href="/demo">
-          <Button className="mt-6 bg-orange-600 hover:bg-orange-700 text-white px-8 py-6 rounded-lg text-lg">
+          <Button className="mt-6 bg-orange-600 hover:bg-orange-700 text-white px-8 py-6 rounded-lg text-lg cursor-pointer">
             Try Demo
           </Button>
         </Link>
@@ -35,12 +35,12 @@ export default function Home() {
         </div>
 
         {/* Floating Cards */}
-        <div className="absolute top-1/6 left-16 backdrop-blur-md bg-white/10 border border-white/20 rounded-3xl p-8 flex items-center max-w-xl space-x-6 shadow-lg">
+        <div className="absolute top-1/6 left-16 backdrop-blur-md bg-white/10 border border-white/20 rounded-4xl p-4 flex items-center max-w-xl space-x-6 shadow-lg">
           <Image
             src="/coachbot.png"
             alt="CoachBot"
-            width={250}
-            height={250}
+            width={400}
+            height={400}
             className="rounded-lg object-cover"
           />
           <div>
@@ -54,12 +54,12 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="absolute bottom-40 right-8 backdrop-blur-md bg-white/10 border border-white/20 rounded-3xl p-8 flex items-center max-w-xl space-x-6 shadow-lg">
+        <div className="absolute bottom-25 right-8 backdrop-blur-md bg-white/10 border border-white/20 rounded-4xl p-4 flex items-center max-w-xl space-x-6 shadow-lg">
           <Image
             src="/walkplay.png"
             alt="Walk the Play"
-            width={250}
-            height={250}
+            width={400}
+            height={400}
             className="rounded-lg object-cover"
           />
           <div>
