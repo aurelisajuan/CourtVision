@@ -18,9 +18,9 @@ export default function Home() {
           AI Replay
         </h1>
 
-        <Link href="#explore">
+        <Link href="/demo">
           <Button className="mt-6 bg-orange-600 hover:bg-orange-700 text-white px-8 py-6 rounded-lg text-lg">
-            Explore More
+            Try Demo
           </Button>
         </Link>
 
