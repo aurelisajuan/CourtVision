@@ -39,8 +39,8 @@ export default function Home() {
           <Image
             src="/coachbot.png"
             alt="CoachBot"
-            width={120}
-            height={120}
+            width={250}
+            height={250}
             className="rounded-lg object-cover"
           />
           <div>
@@ -58,8 +58,8 @@ export default function Home() {
           <Image
             src="/walkplay.png"
             alt="Walk the Play"
-            width={120}
-            height={120}
+            width={250}
+            height={250}
             className="rounded-lg object-cover"
           />
           <div>

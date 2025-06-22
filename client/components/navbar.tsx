@@ -7,7 +7,7 @@ export default function Navbar() {
             <div className="container mx-auto flex items-center justify-between py-6">
                 <div className="flex items-center space-x-3">
                     <Image src="/logo.png" alt="CourtVision" width={32} height={32} />
-                    <span className="text-white text-lg font-bold">CourtVision</span>
+                    <span className="text-white text-3xl font-bold">CourtVision</span>
                 </div>
                 <nav className="hidden md:flex space-x-8">
                     <Link href="#" className="text-white hover:text-orange-400 transition">
