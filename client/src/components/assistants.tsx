@@ -24,6 +24,6 @@ const vapi = new VapiClient({
     },
     voice: {
       provider: "11labs",
-      voiceId: "21m00Tcm4TlvDq8ikWAM" // change if needed for a more expressive coaching tone
+      voiceId: "21m00Tcm4TlvDq8ikWAM" 
     }
   });
