@@ -8,8 +8,8 @@ const vapi = new VapiClient({
     name: "CoachBot",
     firstMessage: "Hey Coach! Ready to break down the play together?",
     model: {
-      provider: "openai",
-      model: "gpt-4o",
+      provider: "google",
+      model: "gemini-2.0-pro-exp-02-05",
       temperature: 0.6,
       messages: [{
         role: "system",
