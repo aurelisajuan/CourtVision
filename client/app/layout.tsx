@@ -6,9 +6,12 @@ import "./globals.css";
 const montserrat = Montserrat({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Extra",
+  title: "CourtVision",
   description:
     "Transform 2D sports footage into immersive, interactive 3D experiences for coaches, analysts, and referees.",
+  icons: {
+    icon: '/favicon.ico'
+  },
 };
 
 export default function RootLayout({
@@ -18,6 +21,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <link rel="icon" href="/favicon.ico" />
+      </head>
       <body className={montserrat.className}>{children}</body>
     </html>
   );
