@@ -12,7 +12,7 @@ export default function Home() {
       <Navbar />
 
       <main className="relative z-10 flex flex-col items-start justify-center h-screen container mx-auto px-4">
-        <h1 className="text-white text-4xl lg:text-6xl font-bold uppercase leading-tight">
+        <h1 className="text-white text-4xl lg:text-6xl font-bold uppercase leading-tight mt-56">
           The Best 3D
           <br />
           AI Replay
@@ -25,7 +25,7 @@ export default function Home() {
         </Link>
 
         {/* Orange Dots */}
-        <div className="absolute top-[20%] left-[45%] w-32 h-32">
+        <div className="absolute top-[30%] left-[45%] w-32 h-32 z-20">
           <Image
             src="/dots.png"
             alt="Orange graphic"
@@ -35,7 +35,7 @@ export default function Home() {
         </div>
 
         {/* Floating Cards */}
-        <div className="absolute top-[15%] left-16 backdrop-blur-md bg-white/10 border border-white/20 rounded-2xl p-6 flex items-center max-w-lg space-x-4 shadow-lg">
+        <div className="absolute top-[25%] left-16 backdrop-blur-md bg-white/10 border border-white/20 rounded-2xl p-6 flex items-center max-w-lg space-x-4 shadow-lg">
           <Image
             src="/coachbot.png"
             alt="CoachBot"
@@ -54,7 +54,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="absolute bottom-[15%] right-8 backdrop-blur-md bg-white/10 border border-white/20 rounded-2xl p-6 flex items-center max-w-lg space-x-4 shadow-lg">
+        <div className="absolute bottom-[18%] right-18 backdrop-blur-md bg-white/10 border border-white/20 rounded-2xl p-6 flex items-center max-w-lg space-x-4 shadow-lg">
           <Image
             src="/walkplay.png"
             alt="Walk the Play"
