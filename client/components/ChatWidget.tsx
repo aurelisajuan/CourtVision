@@ -24,7 +24,7 @@ const ChatWidget: React.FC<ChatWidgetProps> = ({ messages }) => {
   return (
     <div className="bg-[#2C2C2E] text-white rounded-lg p-4 flex-grow flex flex-col">
       <h3 className="font-bold text-lg mb-4">ChatBot</h3>
-      <div className="space-y-4 flex-grow overflow-y-auto">
+      <div className="space-y-4 flex-grow">
         {messages.length === 0 && (
           <div className="flex justify-center items-center h-full">
             <p className="text-gray-400">Press the mic to start...</p>
