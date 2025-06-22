@@ -1,7 +1,8 @@
+"use client"
 import React, { useEffect } from 'react';
 import Vapi from '@vapi-ai/web';
 
-const VapiComponent = () => {
+export const VapiComponent = () => {
   useEffect(() => {
     const vapi = new Vapi('VAPI_API_KEY');
 
@@ -25,5 +26,3 @@ const VapiComponent = () => {
     </div>
   );
 };
-
-export default VapiComponent;
