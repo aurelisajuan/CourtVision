@@ -4,10 +4,10 @@ import Vapi from '@vapi-ai/web';
 
 export const VapiComponent = () => {
   useEffect(() => {
-    const vapi = new Vapi('VAPI_API_KEY');
-
+    const vapi = new Vapi(process.env.VAPI_API_KEY || "");
+    const assistantId = process.env.ASSISTANT_ID || "";
     // Start voice conversation
-    vapi.start('ASSISTANT_ID');
+    vapi.start(process.env.ASSISTANT_ID);
 
     // Listen for events
     vapi.on('call-start', () => console.log('Call started'));

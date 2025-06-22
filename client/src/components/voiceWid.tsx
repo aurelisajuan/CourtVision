@@ -1,7 +1,6 @@
 "use client"
 import React, { useState, useEffect } from 'react';
 import Vapi from '@vapi-ai/web';
-import { useRouter } from 'next/router';
 
 interface VapiWidgetProps {
   apiKey: string;
