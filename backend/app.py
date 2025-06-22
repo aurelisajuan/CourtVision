@@ -24,9 +24,16 @@ BASE_URL = (
 logging.basicConfig(level=logging.INFO)
 app = Flask(__name__)
 
+# --- CUSTOM PROMPT FOR YOUR AGENT ---
+SYSTEM_PROMPT = {
+    "role": "system",
+    "content": (
+        """You are CourtVision VR's CoachBot, an AI-powered, multimodal basketball analysis assistant built on Video Gaussians, OpenAI's GPT-4 multimodal, Retell AI and ElevenLabs V3. Your goal is to help coaches, analysts and referees review and understand plays in immersive 3D, answer tactical questions, and adjudicate fouls and flops with clear, evidence-based reasoning. When you receive video frames or spatial data, reconstruct the 3D scene using Gaussian-splats and interpret player movements, body posture and spatial relationships frame-by-frame. Listen for natural-language voice commands ("pause," "rewind two seconds," "was that a legal screen?") and respond verbally: Replay control: "Paused. Ready to resume," "Rewinding three seconds," "Zooming out to court-level view." Call analysis: "Contact was minimal, defender was set, and attacker initiated vertical motion—this is a legal block." Tactical breakdown: "Off-ball cutter holds spacing at the elbow, forcing the help defender to cover; this opens the weak-side corner." Foul vs. flop detection: Evaluate timing of contact, reaction delay, joint angles and momentum. Provide justification: "Minimal lateral contact + player-initiated fall + 150 ms reaction delay → probable flop." When generating post-play commentary, use expressive, emotionally varied narration via ElevenLabs V3. Maintain a supportive but analytical tone for coaches, neutral but clear for officials, and high-energy for fan-facing replays. Always reference objective spatial-temporal evidence and keep explanations concise and jargon-friendly."""
+    ),
+}
+
 # Helper functions for payment processing
 def get_payment_link(args):
-    # args might include order_id, amount, etc.
     order_id = args.get("order_id", "unknown")
     return {"url": f"https://pay.example.com/{order_id}"}
 
@@ -40,6 +47,7 @@ tool_functions = {
 def chat_completions():
     """
     Handles chat completion requests with:
+    - A fixed system prompt
     - Payment link generation
     - Call transfers
     - Text streaming
@@ -61,13 +69,17 @@ def chat_completions():
             yield "data: [DONE]\n\n"
         return Response(transfer_only(), content_type="text/event-stream")
 
-    # Prepare request body
+    # Prepend the system prompt to the user's messages
+    user_messages = payload.get("messages", [])
+    all_messages = [SYSTEM_PROMPT] + user_messages
+
+    # Prepare request body for Gemini
     body = {
-        "model":        payload["model"],
-        "messages":     payload["messages"],
-        "temperature":  payload.get("temperature", 1.0),
-        "stream":       True,
-        "functions":    payload.get("tools", []),
+        "model":         payload["model"],
+        "messages":      all_messages,
+        "temperature":   payload.get("temperature", 1.0),
+        "stream":        True,
+        "functions":     payload.get("tools", []),
         "function_call": payload.get("tool_choice", "auto"),
     }
 
@@ -87,7 +99,7 @@ def chat_completions():
     ]
     body["functions"] = body["functions"] + native_defs
 
-    # Make request to Gemini API
+    # Call the Gemini API
     resp = requests.post(BASE_URL, json=body, stream=True)
     resp.raise_for_status()
 
@@ -108,7 +120,7 @@ def chat_completions():
             choice = obj["choices"][0]
             delta  = choice.get("delta", {})
 
-            # Handle function calls
+            # Handle incoming function_call deltas
             if "function_call" in delta:
                 fc = delta["function_call"]
                 if fc.get("name"):
@@ -116,7 +128,7 @@ def chat_completions():
                 if fc.get("arguments"):
                     buf += fc["arguments"]
 
-            # Execute function when complete
+            # When function_call finishes, execute the local Python function
             if choice.get("finish_reason") == "function_call" and current:
                 try:
                     args = json.loads(buf)
@@ -132,11 +144,11 @@ def chat_completions():
                         "name":    fname,
                         "content": json.dumps(result),
                     }
-                    # Get final response
+                    # Re-query Gemini for the final assistant response
                     follow = requests.post(BASE_URL, json={
                         **body,
                         "stream":   False,
-                        "messages": payload["messages"] + [func_msg]
+                        "messages": all_messages + [func_msg]
                     })
                     follow.raise_for_status()
                     yield f"data: {follow.text}\n\n"
@@ -145,10 +157,9 @@ def chat_completions():
                 current = None
                 continue
 
-            # Stream regular response chunks
+            # Stream normal assistant deltas
             yield f"data: {json.dumps(obj)}\n\n"
 
-    # Return streaming response
     headers = {
         "Content-Type":  "text/event-stream",
         "Cache-Control": "no-cache",
