@@ -7,12 +7,14 @@ interface VapiWidgetProps {
   apiKey?: string;
   assistantId?: string;
   config?: Record<string, unknown>;
+  onMessage?: (message: any) => void;
 }
 
 const VapiWidget: React.FC<VapiWidgetProps> = ({
   apiKey,
   assistantId,
   config = {},
+  onMessage,
 }) => {
   const [vapi, setVapi] = useState<Vapi | null>(null);
   const [isConnected, setIsConnected] = useState(false);
@@ -50,8 +52,14 @@ const VapiWidget: React.FC<VapiWidgetProps> = ({
       setIsLoading(false);
     });
 
+    vapiInstance.on("message", (message) => {
+      if (onMessage && message.type !== "transcript") {
+        onMessage(message);
+      }
+    });
+
     return () => vapiInstance.stop();
-  }, [getApiKey]);
+  }, [getApiKey, onMessage]);
 
   const toggleCall = async () => {
     if (isLoading) return;
