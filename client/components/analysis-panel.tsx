@@ -1,24 +1,34 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Badge } from "@/components/ui/badge"
-import { ChevronDown, ChevronUp, Info } from "lucide-react"
+import { useState } from "react";
+import { Button } from "./ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "./ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
+import { Badge } from "./ui/badge";
+import { ChevronDown, ChevronUp, Info } from "lucide-react";
 
 interface AnalysisPanelProps {
-  isAnalyzing?: boolean
-  analysisData?: any
-  onClose?: () => void
+  isAnalyzing?: boolean;
+  analysisData?: any;
+  onClose?: () => void;
 }
 
-export function AnalysisPanel({ isAnalyzing = false, analysisData = null, onClose }: AnalysisPanelProps) {
-  const [isCollapsed, setIsCollapsed] = useState(false)
+export function AnalysisPanel({
+  isAnalyzing = false,
+  analysisData = null,
+  onClose,
+}: AnalysisPanelProps) {
+  const [isCollapsed, setIsCollapsed] = useState(false);
 
   const toggleCollapse = () => {
-    setIsCollapsed(!isCollapsed)
-  }
+    setIsCollapsed(!isCollapsed);
+  };
 
   if (isCollapsed) {
     return (
@@ -28,7 +38,7 @@ export function AnalysisPanel({ isAnalyzing = false, analysisData = null, onClos
           <ChevronUp className="h-4 w-4" />
         </Button>
       </div>
-    )
+    );
   }
 
   return (
@@ -36,11 +46,21 @@ export function AnalysisPanel({ isAnalyzing = false, analysisData = null, onClos
       <div className="p-4 border-b sticky top-0 bg-white z-10 flex items-center justify-between">
         <h2 className="font-semibold">Play Analysis</h2>
         <div className="flex items-center gap-2">
-          <Button variant="ghost" size="icon" onClick={toggleCollapse} className="h-8 w-8">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={toggleCollapse}
+            className="h-8 w-8"
+          >
             <ChevronDown className="h-4 w-4" />
           </Button>
           {onClose && (
-            <Button variant="ghost" size="icon" onClick={onClose} className="h-8 w-8">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={onClose}
+              className="h-8 w-8"
+            >
               <ChevronDown className="h-4 w-4" />
             </Button>
           )}
@@ -72,9 +92,13 @@ export function AnalysisPanel({ isAnalyzing = false, analysisData = null, onClos
                 <CardHeader className="pb-2">
                   <CardTitle className="text-lg flex items-center justify-between">
                     Foul Analysis
-                    <Badge className="bg-orange-500">{analysisData?.foulDetection?.result || "Probable Flop"}</Badge>
+                    <Badge className="bg-orange-500">
+                      {analysisData?.foulDetection?.result || "Probable Flop"}
+                    </Badge>
                   </CardTitle>
-                  <CardDescription>Confidence: {analysisData?.foulDetection?.confidence || 87}%</CardDescription>
+                  <CardDescription>
+                    Confidence: {analysisData?.foulDetection?.confidence || 87}%
+                  </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <p className="text-sm">
@@ -105,28 +129,42 @@ export function AnalysisPanel({ isAnalyzing = false, analysisData = null, onClos
                     <div>
                       <h4 className="font-medium text-sm mb-2">Offense</h4>
                       <div className="grid grid-cols-5 gap-2">
-                        {(analysisData?.playerPositions?.offense || []).map((player) => (
-                          <div key={player.id} className="flex flex-col items-center">
-                            <div className="h-8 w-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-sm font-medium">
-                              {player.id}
+                        {(analysisData?.playerPositions?.offense || []).map(
+                          (player) => (
+                            <div
+                              key={player.id}
+                              className="flex flex-col items-center"
+                            >
+                              <div className="h-8 w-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-sm font-medium">
+                                {player.id}
+                              </div>
+                              <span className="text-xs mt-1">
+                                {player.position}
+                              </span>
                             </div>
-                            <span className="text-xs mt-1">{player.position}</span>
-                          </div>
-                        ))}
+                          )
+                        )}
                       </div>
                     </div>
 
                     <div>
                       <h4 className="font-medium text-sm mb-2">Defense</h4>
                       <div className="grid grid-cols-5 gap-2">
-                        {(analysisData?.playerPositions?.defense || []).map((player) => (
-                          <div key={player.id} className="flex flex-col items-center">
-                            <div className="h-8 w-8 rounded-full bg-red-100 text-red-600 flex items-center justify-center text-sm font-medium">
-                              {player.id}
+                        {(analysisData?.playerPositions?.defense || []).map(
+                          (player) => (
+                            <div
+                              key={player.id}
+                              className="flex flex-col items-center"
+                            >
+                              <div className="h-8 w-8 rounded-full bg-red-100 text-red-600 flex items-center justify-center text-sm font-medium">
+                                {player.id}
+                              </div>
+                              <span className="text-xs mt-1">
+                                {player.position}
+                              </span>
                             </div>
-                            <span className="text-xs mt-1">{player.position}</span>
-                          </div>
-                        ))}
+                          )
+                        )}
                       </div>
                     </div>
                   </div>
@@ -180,10 +218,12 @@ export function AnalysisPanel({ isAnalyzing = false, analysisData = null, onClos
           <Info className="h-12 w-12 text-gray-300" />
           <div>
             <p className="font-medium">No Analysis Available</p>
-            <p className="text-sm text-gray-500 mt-1">Click "Analyze Play" to generate insights</p>
+            <p className="text-sm text-gray-500 mt-1">
+              Click "Analyze Play" to generate insights
+            </p>
           </div>
         </div>
       )}
     </div>
-  )
+  );
 }

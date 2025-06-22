@@ -1,4 +1,4 @@
-import VapiWidget from "@/components/voiceWid";
+import VapiWidget from "../../components/voiceWid";
 
 export default function VapiPage() {
   return (

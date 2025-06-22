@@ -1,9 +1,9 @@
-"use client"
+"use client";
 
-import { useState, useEffect, useRef } from "react"
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { Slider } from "@/components/ui/slider"
+import { useState, useEffect, useRef } from "react";
+import Link from "next/link";
+import { Button } from "../../components/ui/button";
+import { Slider } from "../../components/ui/slider";
 import {
   ArrowLeft,
   Pause,
@@ -22,86 +22,112 @@ import {
   ZoomOut,
   ChevronDown,
   Info,
-} from "lucide-react"
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Badge } from "@/components/ui/badge"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { ThreeDViewer } from "@/components/three-d-viewer"
+} from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "../../components/ui/tooltip";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "../../components/ui/sheet";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "../../components/ui/tabs";
+import { Badge } from "../../components/ui/badge";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "../../components/ui/card";
+import { ThreeDViewer } from "../../components/three-d-viewer";
 
 export default function DemoPage() {
-  const [isPlaying, setIsPlaying] = useState(false)
-  const [isMuted, setIsMuted] = useState(false)
-  const [isFullscreen, setIsFullscreen] = useState(false)
-  const [isMicActive, setIsMicActive] = useState(false)
-  const [currentTime, setCurrentTime] = useState(0)
-  const [duration, setDuration] = useState(100)
-  const [showAnalysisPanel, setShowAnalysisPanel] = useState(false)
-  const [analysisData, setAnalysisData] = useState(null)
-  const [isAnalyzing, setIsAnalyzing] = useState(false)
-  const [assistantMessage, setAssistantMessage] = useState("")
-  const containerRef = useRef(null)
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [isMuted, setIsMuted] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [isMicActive, setIsMicActive] = useState(false);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(100);
+  const [showAnalysisPanel, setShowAnalysisPanel] = useState(false);
+  const [analysisData, setAnalysisData] = useState(null);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [assistantMessage, setAssistantMessage] = useState("");
+  const containerRef = useRef(null);
 
   // Simulate loading the 3D scene
   useEffect(() => {
     // In a real implementation, this would load the 3D scene data
-    setDuration(100)
+    setDuration(100);
 
     // Simulate assistant welcome message
     setTimeout(() => {
       setAssistantMessage(
-        "Welcome to CourtVision VR! I'm your CoachBot assistant. You can ask me questions about the play or request analysis at any time.",
-      )
-    }, 1500)
-  }, [])
+        "Welcome to CourtVision VR! I'm your CoachBot assistant. You can ask me questions about the play or request analysis at any time."
+      );
+    }, 1500);
+  }, []);
 
   const togglePlay = () => {
-    setIsPlaying(!isPlaying)
-  }
+    setIsPlaying(!isPlaying);
+  };
 
   const toggleMute = () => {
-    setIsMuted(!isMuted)
-  }
+    setIsMuted(!isMuted);
+  };
 
   const toggleFullscreen = () => {
     if (!document.fullscreenElement) {
       containerRef.current.requestFullscreen().catch((err) => {
-        console.error(`Error attempting to enable fullscreen: ${err.message}`)
-      })
-      setIsFullscreen(true)
+        console.error(`Error attempting to enable fullscreen: ${err.message}`);
+      });
+      setIsFullscreen(true);
     } else {
-      document.exitFullscreen()
-      setIsFullscreen(false)
+      document.exitFullscreen();
+      setIsFullscreen(false);
     }
-  }
+  };
 
   const toggleMic = () => {
-    setIsMicActive(!isMicActive)
+    setIsMicActive(!isMicActive);
     if (!isMicActive) {
       // In a real implementation, this would activate the microphone
-      setAssistantMessage("I'm listening. What would you like to know about this play?")
+      setAssistantMessage(
+        "I'm listening. What would you like to know about this play?"
+      );
     } else {
-      setAssistantMessage("Microphone deactivated.")
+      setAssistantMessage("Microphone deactivated.");
     }
-  }
+  };
 
   const handleTimeChange = (value: number[]) => {
-    setCurrentTime(value[0])
-  }
+    setCurrentTime(value[0]);
+  };
 
   const analyzePlay = () => {
-    setIsAnalyzing(true)
-    setShowAnalysisPanel(true)
+    setIsAnalyzing(true);
+    setShowAnalysisPanel(true);
 
     // Simulate AI analysis
     setTimeout(() => {
-      setIsAnalyzing(false)
+      setIsAnalyzing(false);
       setAnalysisData({
         foulDetection: {
           result: "Probable Flop",
           confidence: 87,
-          reasoning: "Minimal contact + player initiated fall + delay before reaction",
+          reasoning:
+            "Minimal contact + player initiated fall + delay before reaction",
         },
         playerPositions: {
           offense: [
@@ -125,19 +151,19 @@ export default function DemoPage() {
           "Offensive player exaggerated contact",
           "Referee should have waited to see completion of play",
         ],
-      })
+      });
 
       setAssistantMessage(
-        "I've analyzed the play. This appears to be a flop with 87% confidence. The offensive player exaggerated minimal contact after a delay.",
-      )
-    }, 3000)
-  }
+        "I've analyzed the play. This appears to be a flop with 87% confidence. The offensive player exaggerated minimal contact after a delay."
+      );
+    }, 3000);
+  };
 
   const formatTime = (seconds: number) => {
-    const mins = Math.floor(seconds / 60)
-    const secs = Math.floor(seconds % 60)
-    return `${mins}:${secs < 10 ? "0" : ""}${secs}`
-  }
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${mins}:${secs < 10 ? "0" : ""}${secs}`;
+  };
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-100" ref={containerRef}>
@@ -164,7 +190,10 @@ export default function DemoPage() {
             </Button>
             <Sheet>
               <SheetTrigger asChild>
-                <Button variant="outline" className="bg-white text-gray-600 border-gray-300">
+                <Button
+                  variant="outline"
+                  className="bg-white text-gray-600 border-gray-300"
+                >
                   <Info className="h-4 w-4 mr-2" />
                   Help
                 </Button>
@@ -172,7 +201,9 @@ export default function DemoPage() {
               <SheetContent>
                 <SheetHeader>
                   <SheetTitle>CourtVision VR Demo Help</SheetTitle>
-                  <SheetDescription>Learn how to use the 3D replay system</SheetDescription>
+                  <SheetDescription>
+                    Learn how to use the 3D replay system
+                  </SheetDescription>
                 </SheetHeader>
                 <div className="mt-6 space-y-4">
                   <div>
@@ -239,10 +270,16 @@ export default function DemoPage() {
                           className="text-white hover:bg-white/10"
                           onClick={toggleMute}
                         >
-                          {isMuted ? <VolumeX className="h-5 w-5" /> : <Volume2 className="h-5 w-5" />}
+                          {isMuted ? (
+                            <VolumeX className="h-5 w-5" />
+                          ) : (
+                            <Volume2 className="h-5 w-5" />
+                          )}
                         </Button>
                       </TooltipTrigger>
-                      <TooltipContent>{isMuted ? "Unmute" : "Mute"}</TooltipContent>
+                      <TooltipContent>
+                        {isMuted ? "Unmute" : "Mute"}
+                      </TooltipContent>
                     </Tooltip>
                   </TooltipProvider>
 
@@ -255,16 +292,28 @@ export default function DemoPage() {
                           className="text-white hover:bg-white/10"
                           onClick={toggleMic}
                         >
-                          {isMicActive ? <Mic className="h-5 w-5 text-blue-400" /> : <MicOff className="h-5 w-5" />}
+                          {isMicActive ? (
+                            <Mic className="h-5 w-5 text-blue-400" />
+                          ) : (
+                            <MicOff className="h-5 w-5" />
+                          )}
                         </Button>
                       </TooltipTrigger>
-                      <TooltipContent>{isMicActive ? "Stop Listening" : "Start Voice Assistant"}</TooltipContent>
+                      <TooltipContent>
+                        {isMicActive
+                          ? "Stop Listening"
+                          : "Start Voice Assistant"}
+                      </TooltipContent>
                     </Tooltip>
                   </TooltipProvider>
                 </div>
 
                 <div className="flex items-center gap-2">
-                  <Button variant="ghost" size="icon" className="text-white hover:bg-white/10">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="text-white hover:bg-white/10"
+                  >
                     <Rewind className="h-5 w-5" />
                   </Button>
                   <Button
@@ -273,9 +322,17 @@ export default function DemoPage() {
                     className="text-white hover:bg-white/10 h-10 w-10 rounded-full bg-white/20"
                     onClick={togglePlay}
                   >
-                    {isPlaying ? <Pause className="h-5 w-5" /> : <Play className="h-5 w-5" />}
+                    {isPlaying ? (
+                      <Pause className="h-5 w-5" />
+                    ) : (
+                      <Play className="h-5 w-5" />
+                    )}
                   </Button>
-                  <Button variant="ghost" size="icon" className="text-white hover:bg-white/10">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="text-white hover:bg-white/10"
+                  >
                     <FastForward className="h-5 w-5" />
                   </Button>
                 </div>
@@ -290,10 +347,16 @@ export default function DemoPage() {
                           className="text-white hover:bg-white/10"
                           onClick={toggleFullscreen}
                         >
-                          {isFullscreen ? <Minimize className="h-5 w-5" /> : <Maximize className="h-5 w-5" />}
+                          {isFullscreen ? (
+                            <Minimize className="h-5 w-5" />
+                          ) : (
+                            <Maximize className="h-5 w-5" />
+                          )}
                         </Button>
                       </TooltipTrigger>
-                      <TooltipContent>{isFullscreen ? "Exit Fullscreen" : "Enter Fullscreen"}</TooltipContent>
+                      <TooltipContent>
+                        {isFullscreen ? "Exit Fullscreen" : "Enter Fullscreen"}
+                      </TooltipContent>
                     </Tooltip>
                   </TooltipProvider>
                 </div>
@@ -368,7 +431,12 @@ export default function DemoPage() {
           <div className="w-full md:w-96 bg-white border-l overflow-y-auto">
             <div className="p-4 border-b sticky top-0 bg-white z-10 flex items-center justify-between">
               <h2 className="font-semibold">Play Analysis</h2>
-              <Button variant="ghost" size="icon" onClick={() => setShowAnalysisPanel(false)} className="h-8 w-8">
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setShowAnalysisPanel(false)}
+                className="h-8 w-8"
+              >
                 <ChevronDown className="h-4 w-4" />
               </Button>
             </div>
@@ -398,12 +466,18 @@ export default function DemoPage() {
                       <CardHeader className="pb-2">
                         <CardTitle className="text-lg flex items-center justify-between">
                           Foul Analysis
-                          <Badge className="bg-orange-500">{analysisData.foulDetection.result}</Badge>
+                          <Badge className="bg-orange-500">
+                            {analysisData.foulDetection.result}
+                          </Badge>
                         </CardTitle>
-                        <CardDescription>Confidence: {analysisData.foulDetection.confidence}%</CardDescription>
+                        <CardDescription>
+                          Confidence: {analysisData.foulDetection.confidence}%
+                        </CardDescription>
                       </CardHeader>
                       <CardContent>
-                        <p className="text-sm">{analysisData.foulDetection.reasoning}</p>
+                        <p className="text-sm">
+                          {analysisData.foulDetection.reasoning}
+                        </p>
                       </CardContent>
                     </Card>
 
@@ -420,36 +494,56 @@ export default function DemoPage() {
                   <TabsContent value="positions" className="mt-4">
                     <Card>
                       <CardHeader className="pb-2">
-                        <CardTitle className="text-lg">Player Positions</CardTitle>
+                        <CardTitle className="text-lg">
+                          Player Positions
+                        </CardTitle>
                         <CardDescription>At current frame</CardDescription>
                       </CardHeader>
                       <CardContent>
                         <div className="space-y-4">
                           <div>
-                            <h4 className="font-medium text-sm mb-2">Offense</h4>
+                            <h4 className="font-medium text-sm mb-2">
+                              Offense
+                            </h4>
                             <div className="grid grid-cols-5 gap-2">
-                              {analysisData.playerPositions.offense.map((player) => (
-                                <div key={player.id} className="flex flex-col items-center">
-                                  <div className="h-8 w-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-sm font-medium">
-                                    {player.id}
+                              {analysisData.playerPositions.offense.map(
+                                (player) => (
+                                  <div
+                                    key={player.id}
+                                    className="flex flex-col items-center"
+                                  >
+                                    <div className="h-8 w-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-sm font-medium">
+                                      {player.id}
+                                    </div>
+                                    <span className="text-xs mt-1">
+                                      {player.position}
+                                    </span>
                                   </div>
-                                  <span className="text-xs mt-1">{player.position}</span>
-                                </div>
-                              ))}
+                                )
+                              )}
                             </div>
                           </div>
 
                           <div>
-                            <h4 className="font-medium text-sm mb-2">Defense</h4>
+                            <h4 className="font-medium text-sm mb-2">
+                              Defense
+                            </h4>
                             <div className="grid grid-cols-5 gap-2">
-                              {analysisData.playerPositions.defense.map((player) => (
-                                <div key={player.id} className="flex flex-col items-center">
-                                  <div className="h-8 w-8 rounded-full bg-red-100 text-red-600 flex items-center justify-center text-sm font-medium">
-                                    {player.id}
+                              {analysisData.playerPositions.defense.map(
+                                (player) => (
+                                  <div
+                                    key={player.id}
+                                    className="flex flex-col items-center"
+                                  >
+                                    <div className="h-8 w-8 rounded-full bg-red-100 text-red-600 flex items-center justify-center text-sm font-medium">
+                                      {player.id}
+                                    </div>
+                                    <span className="text-xs mt-1">
+                                      {player.position}
+                                    </span>
                                   </div>
-                                  <span className="text-xs mt-1">{player.position}</span>
-                                </div>
-                              ))}
+                                )
+                              )}
                             </div>
                           </div>
                         </div>
@@ -460,7 +554,9 @@ export default function DemoPage() {
                   <TabsContent value="recommendations" className="mt-4">
                     <Card>
                       <CardHeader className="pb-2">
-                        <CardTitle className="text-lg">Recommendations</CardTitle>
+                        <CardTitle className="text-lg">
+                          Recommendations
+                        </CardTitle>
                         <CardDescription>Based on AI analysis</CardDescription>
                       </CardHeader>
                       <CardContent>
@@ -497,7 +593,9 @@ export default function DemoPage() {
                 <Info className="h-12 w-12 text-gray-300" />
                 <div>
                   <p className="font-medium">No Analysis Available</p>
-                  <p className="text-sm text-gray-500 mt-1">Click "Analyze Play" to generate insights</p>
+                  <p className="text-sm text-gray-500 mt-1">
+                    Click "Analyze Play" to generate insights
+                  </p>
                 </div>
               </div>
             )}
@@ -505,5 +603,5 @@ export default function DemoPage() {
         )}
       </main>
     </div>
-  )
+  );
 }

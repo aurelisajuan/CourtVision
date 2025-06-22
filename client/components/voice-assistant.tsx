@@ -1,21 +1,26 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { Button } from "@/components/ui/button"
-import { Mic, MicOff, X } from "lucide-react"
+import { useState, useEffect } from "react";
+import { Button } from "./ui/button";
+import { Mic, MicOff, X } from "lucide-react";
 
 interface VoiceAssistantProps {
-  onMessage?: (message: string) => void
-  onCommand?: (command: string) => void
-  isActive?: boolean
-  onToggle?: () => void
+  onMessage?: (message: string) => void;
+  onCommand?: (command: string) => void;
+  isActive?: boolean;
+  onToggle?: () => void;
 }
 
-export function VoiceAssistant({ onMessage, onCommand, isActive = false, onToggle }: VoiceAssistantProps) {
-  const [listening, setListening] = useState(isActive)
-  const [transcript, setTranscript] = useState("")
-  const [showTranscript, setShowTranscript] = useState(false)
-  const [responses, setResponses] = useState<string[]>([])
+export function VoiceAssistant({
+  onMessage,
+  onCommand,
+  isActive = false,
+  onToggle,
+}: VoiceAssistantProps) {
+  const [listening, setListening] = useState(isActive);
+  const [transcript, setTranscript] = useState("");
+  const [showTranscript, setShowTranscript] = useState(false);
+  const [responses, setResponses] = useState<string[]>([]);
 
   // Mock responses for demo purposes
   const mockResponses = [
@@ -24,66 +29,78 @@ export function VoiceAssistant({ onMessage, onCommand, isActive = false, onToggl
     "This is a pick and roll play with the center setting a screen for the point guard.",
     "The spacing on this play is excellent. Notice how the offense maintains proper distance to create driving lanes.",
     "I've analyzed the play. The defender was still moving when contact occurred, making this a blocking foul.",
-  ]
+  ];
 
   useEffect(() => {
-    setListening(isActive)
-  }, [isActive])
+    setListening(isActive);
+  }, [isActive]);
 
   const toggleListening = () => {
-    const newState = !listening
-    setListening(newState)
+    const newState = !listening;
+    setListening(newState);
 
     if (onToggle) {
-      onToggle()
+      onToggle();
     }
 
     if (newState) {
       // Start listening
-      setShowTranscript(true)
+      setShowTranscript(true);
 
       // Simulate speech recognition
       setTimeout(() => {
-        const mockQuestion = "Was that a foul or a flop?"
-        setTranscript(mockQuestion)
+        const mockQuestion = "Was that a foul or a flop?";
+        setTranscript(mockQuestion);
 
         if (onMessage) {
-          onMessage(mockQuestion)
+          onMessage(mockQuestion);
         }
 
         // Simulate AI response
         setTimeout(() => {
-          const response = mockResponses[Math.floor(Math.random() * mockResponses.length)]
-          setResponses([...responses, response])
+          const response =
+            mockResponses[Math.floor(Math.random() * mockResponses.length)];
+          setResponses([...responses, response]);
 
           if (onCommand) {
-            onCommand(response)
+            onCommand(response);
           }
-        }, 2000)
-      }, 1500)
+        }, 2000);
+      }, 1500);
     } else {
       // Stop listening
-      setShowTranscript(false)
-      setTranscript("")
+      setShowTranscript(false);
+      setTranscript("");
     }
-  }
+  };
 
   return (
     <div className="relative">
       <Button
         variant={listening ? "default" : "outline"}
         size="icon"
-        className={`rounded-full ${listening ? "bg-blue-600" : "bg-white text-gray-600 border-gray-300"}`}
+        className={`rounded-full ${
+          listening ? "bg-blue-600" : "bg-white text-gray-600 border-gray-300"
+        }`}
         onClick={toggleListening}
       >
-        {listening ? <Mic className="h-4 w-4" /> : <MicOff className="h-4 w-4" />}
+        {listening ? (
+          <Mic className="h-4 w-4" />
+        ) : (
+          <MicOff className="h-4 w-4" />
+        )}
       </Button>
 
       {showTranscript && (
         <div className="absolute bottom-full mb-2 right-0 bg-white rounded-lg shadow-lg p-3 w-64 border">
           <div className="flex items-center justify-between mb-2">
             <div className="text-sm font-medium">Voice Assistant</div>
-            <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => setShowTranscript(false)}>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-6 w-6"
+              onClick={() => setShowTranscript(false)}
+            >
               <X className="h-3 w-3" />
             </Button>
           </div>
@@ -115,5 +132,5 @@ export function VoiceAssistant({ onMessage, onCommand, isActive = false, onToggl
         </div>
       )}
     </div>
-  )
+  );
 }
