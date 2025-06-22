@@ -1,0 +1,10 @@
+.k4d-container { position:relative;width:100%;height:100%;background:#000;overflow:hidden; }
+.k4d-container canvas { width:100%;height:100%;display:block;object-fit:contain; }
+.k4d-bar {
+  position:absolute;bottom:0;left:0;right:0;
+  display:flex;align-items:center;gap:8px;
+  background:rgba(0,0,0,.5);padding:4px 8px;font-family:sans-serif;color:#fff;
+}
+.k4d-bar button { font-size:18px;background:none;border:0;color:#fff;cursor:pointer; }
+.k4d-slider { flex:1; }
+.k4d-counter { font-size:12px; }
