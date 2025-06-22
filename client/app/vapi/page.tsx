@@ -1,79 +1,87 @@
+"use client";
+import { useState } from "react";
 import VapiWidget from "../../components/voiceWid";
+import Navbar from "../../components/navbar";
 
 export default function VapiPage() {
+  const [transcript, setTranscript] = useState<
+    Array<{
+      role: string;
+      text: string;
+      transcriptType: "partial" | "final";
+    }>
+  >([]);
+
+  const handleNewMessage = (message: any) => {
+    if (message.type === "transcript" && message.transcript) {
+      setTranscript((prev) => {
+        const lastMessage = prev[prev.length - 1];
+
+        if (
+          lastMessage &&
+          lastMessage.role === message.role &&
+          lastMessage.transcriptType !== "final"
+        ) {
+          const updatedLastMessage = {
+            ...lastMessage,
+            text: message.transcript,
+            transcriptType: message.transcriptType,
+          };
+          return [...prev.slice(0, -1), updatedLastMessage];
+        } else {
+          return [
+            ...prev,
+            {
+              role: message.role,
+              text: message.transcript,
+              transcriptType: message.transcriptType,
+            },
+          ];
+        }
+      });
+    }
+  };
+
   return (
     <div
-      style={{
-        minHeight: "100vh",
-        padding: "20px",
-        background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-      }}
+      className="relative min-h-screen bg-cover bg-center"
+      style={{ backgroundImage: "url('/bg.png')" }}
     >
-      <div
-        style={{
-          maxWidth: "800px",
-          margin: "0 auto",
-          textAlign: "center",
-          color: "white",
-        }}
-      >
-        <h1
-          style={{
-            fontSize: "2.5rem",
-            marginBottom: "1rem",
-            textShadow: "2px 2px 4px rgba(0,0,0,0.3)",
-          }}
-        >
-          Voice Assistant Demo
-        </h1>
-        <p
-          style={{
-            fontSize: "1.2rem",
-            marginBottom: "2rem",
-            opacity: 0.9,
-          }}
-        >
-          Click the voice button in the bottom right corner to start a
-          conversation with our AI assistant.
-        </p>
+      <Navbar />
 
-        <div
-          style={{
-            background: "rgba(255,255,255,0.1)",
-            borderRadius: "12px",
-            padding: "2rem",
-            backdropFilter: "blur(10px)",
-            border: "1px solid rgba(255,255,255,0.2)",
-          }}
-        >
-          <h2 style={{ marginBottom: "1rem" }}>How to use:</h2>
-          <ul
-            style={{
-              textAlign: "left",
-              listStyle: "none",
-              padding: 0,
-              maxWidth: "400px",
-              margin: "0 auto",
-            }}
-          >
-            <li style={{ marginBottom: "0.5rem" }}>
-              🎤 Click the microphone button
-            </li>
-            <li style={{ marginBottom: "0.5rem" }}>
-              🗣️ Speak clearly into your microphone
-            </li>
-            <li style={{ marginBottom: "0.5rem" }}>
-              👂 Listen to the AI assistant's response
-            </li>
-            <li style={{ marginBottom: "0.5rem" }}>
-              🔄 Continue the conversation naturally
-            </li>
-            <li>⏹️ Click "End Call" when finished</li>
-          </ul>
+      <main className="relative z-10 flex flex-col items-center justify-center min-h-screen container mx-auto px-4 text-white">
+        <div className="w-full max-w-2xl flex flex-col items-center justify-center space-y-8">
+          <div className="w-full h-80 overflow-y-auto p-4 rounded-lg backdrop-blur-sm bg-white/5 border border-white/10 shadow-lg">
+            {transcript.map((msg, i) => (
+              <div
+                key={i}
+                className={`flex ${
+                  msg.role === "user" ? "justify-end" : "justify-start"
+                } mb-3`}
+              >
+                <p
+                  className={`p-3 rounded-xl max-w-lg text-left ${
+                    msg.role === "user" ? "bg-orange-500/80" : "bg-gray-700/80"
+                  }`}
+                >
+                  {msg.text}
+                </p>
+              </div>
+            ))}
+            {transcript.length === 0 && (
+              <div className="flex justify-center items-center h-full">
+                <p className="text-gray-400">
+                  Click the microphone to start the conversation...
+                </p>
+              </div>
+            )}
+          </div>
+          <VapiWidget/>
         </div>
-      </div>
+      </main>
 
-      <VapiWidget />
+      {/* Optional: add a dark overlay for better text legibility */}
+      <div className="absolute inset-0 bg-black opacity-50 -z-10"></div>
     </div>
   );
 }
