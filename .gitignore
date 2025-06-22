@@ -1,2 +1,6 @@
+<<<<<<< HEAD
 node_modules
 .env.local
+=======
+colmap/
+>>>>>>> 06c2fbd (push pls)
