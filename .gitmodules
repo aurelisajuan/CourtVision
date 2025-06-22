@@ -1,6 +1,0 @@
-[submodule "extern/EasyVolcap"]
-	path = extern/EasyVolcap
-	url = https://github.com/zju3dv/EasyVolcap
-[submodule "extern/gsplat-mps"]
-	path = extern/gsplat-mps
-	url = https://github.com/iffyloop/gsplat-mps
