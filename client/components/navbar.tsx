@@ -12,27 +12,31 @@ export default function Navbar() {
             <nav className="hidden md:flex space-x-8">
             <Link
                 href="#"
-                className="text-white hover:text-orange-400 transition"
+                className="text-white hover:text-orange-400 transition relative group"
             >
                 About Us
+                <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-orange-400 transition-all duration-300 group-hover:w-full"></div>
             </Link>
             <Link
                 href="#"
-                className="text-white hover:text-orange-400 transition"
+                className="text-white hover:text-orange-400 transition relative group"
             >
                 Contact Us
+                <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-orange-400 transition-all duration-300 group-hover:w-full"></div>
             </Link>
             <Link
                 href="#"
-                className="text-white hover:text-orange-400 transition"
+                className="text-white hover:text-orange-400 transition relative group"
             >
                 Product
+                <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-orange-400 transition-all duration-300 group-hover:w-full"></div>
             </Link>
             <Link
                 href="#"
-                className="text-white hover:text-orange-400 transition"
+                className="text-white hover:text-orange-400 transition relative group"
             >
                 Our Programs
+                <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-orange-400 transition-all duration-300 group-hover:w-full"></div>
             </Link>
             </nav>
         </div>
