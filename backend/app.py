@@ -2,7 +2,7 @@ import os
 import time
 from flask import Flask, request, jsonify, abort
 from dotenv import load_dotenv
-from llm import GeminiLLM, GroqLLM, OpenAILLM
+from llm import GeminiLLM, GroqLLM
 
 load_dotenv()
 
