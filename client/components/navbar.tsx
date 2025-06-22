@@ -4,7 +4,7 @@ import Image from "next/image";
 export default function Navbar() {
     return (
         <header className="absolute top-0 left-0 w-full z-20">
-            <div className="container mx-auto flex items-center justify-between py-6 px-4">
+            <div className="container mx-auto flex items-center justify-between py-6">
                 <div className="flex items-center space-x-3">
                     <Image src="/logo.png" alt="CourtVision" width={32} height={32} />
                     <span className="text-white text-lg font-bold">CourtVision</span>
