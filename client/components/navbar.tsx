@@ -16,7 +16,7 @@ export default function Navbar() {
                     <Link href="#" className="text-white hover:text-orange-400 transition">
                         Contact Us
                     </Link>
-                    <Link href="#" className="text-white hover:text-orange-400 transition">
+                    <Link href="/demo" className="text-white hover:text-orange-400 transition">
                         Try Demo
                     </Link>
                     <Link href="#" className="text-white hover:text-orange-400 transition">
