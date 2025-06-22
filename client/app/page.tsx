@@ -12,7 +12,7 @@ export default function Home() {
       <Navbar />
 
       <main className="relative z-10 flex flex-col items-start justify-center h-screen container mx-auto px-4">
-        <h1 className="text-white text-5xl lg:text-8xl font-black uppercase leading-tight mt-72">
+        <h1 className="text-white text-5xl lg:text-8xl font-black uppercase leading-none mt-72">
           The Best 3D
           <br />
           AI Replay
