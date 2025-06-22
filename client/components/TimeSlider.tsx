@@ -1,29 +1,67 @@
-import React from 'react';
+import React from "react";
 
-type TimeSliderProps = {
-  currentTime: number;
-  duration: number;
-  onSeek: (time: number) => void;
+type Event = {
+  time: number;
+  label: string;
+  color: string;
 };
 
-const TimeSlider: React.FC<TimeSliderProps> = ({ currentTime, duration, onSeek }) => {
-  const percent = duration > 0 ? (currentTime / duration) * 100 : 0;
+type TimeSliderProps = {
+  duration: number;
+  events?: Event[];
+  currentTime?: number;
+  onSeek?: (time: number) => void;
+};
 
+const TimeSlider: React.FC<TimeSliderProps> = ({
+  duration,
+  events = [],
+  currentTime = 0,
+  onSeek,
+}) => {
   return (
-    <div className="w-full px-4 py-2">
+    <div className="relative w-full h-16">
+      {/* Timeline track */}
+      <div className="absolute top-1/2 -translate-y-1/2 left-0 w-full h-2 bg-gray-600 rounded-full">
+        {/* Progress bar */}
+        <div
+          className="absolute h-full bg-orange-500 rounded-full"
+          style={{ width: `${(currentTime / duration) * 100}%` }}
+        />
+        {/* Thumb */}
+        <div
+          className="absolute top-1/2 -translate-y-1/2 w-4 h-4 bg-white rounded-full border-2 border-orange-500"
+          style={{ left: `calc(${(currentTime / duration) * 100}% - 8px)` }}
+        />
+      </div>
+
+      {/* Events */}
+      {events.map((event, index) => {
+        const left = `${(event.time / duration) * 100}%`;
+        return (
+          <div key={index} className="absolute top-0" style={{ left }}>
+            <div className="relative">
+              <span
+                className={`absolute -top-8 -translate-x-1/2 whitespace-nowrap px-2 py-1 text-xs rounded ${event.color} text-white`}
+              >
+                {event.label}
+              </span>
+              <div className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-2 h-2 bg-white rounded-full transform" />
+            </div>
+          </div>
+        );
+      })}
+
+      {/* Clickable area */}
       <input
         type="range"
         min={0}
         max={duration}
-        step={0.01}
+        step="any"
         value={currentTime}
-        onChange={(e) => onSeek(parseFloat(e.target.value))}
-        className="w-full"
+        onChange={(e) => onSeek && onSeek(parseFloat(e.target.value))}
+        className="absolute w-full h-full opacity-0 cursor-pointer"
       />
-      <div className="flex justify-between text-xs text-gray-300">
-        <span>{new Date(currentTime * 1000).toISOString().substr(14, 5)}</span>
-        <span>{new Date(duration * 1000).toISOString().substr(14, 5)}</span>
-      </div>
     </div>
   );
 };
