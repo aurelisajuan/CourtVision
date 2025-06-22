@@ -25,7 +25,7 @@ export default function Home() {
         </Link>
 
         {/* Orange Dots */}
-        <div className="absolute top-[30%] left-[45%] w-40 h-40">
+        <div className="absolute top-[30%] left-[45%] w-40 h-40 z-100">
           <Image
             src="/dots.png"
             alt="Orange graphic"
