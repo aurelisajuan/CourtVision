@@ -55,6 +55,7 @@ const VapiWidget: React.FC<VapiWidgetProps> = ({
 
     // --- Event Handlers ---
     const handleCallStart = () => {
+      console.log("Call started with config:", getConfig());
       setError(null);
       setIsLoading(false);
       setIsConnected(true);
@@ -63,6 +64,7 @@ const VapiWidget: React.FC<VapiWidgetProps> = ({
     };
 
     const handleCallEnd = () => {
+      console.log("Call ended. Last config used:", getConfig());
       setIsConnected(false);
       setIsLoading(false);
       setCallEnded(true); // Set ended flag
@@ -75,6 +77,13 @@ const VapiWidget: React.FC<VapiWidgetProps> = ({
       // Defensive error handling
       let errorMessage =
         e?.message || (typeof e === "object" ? JSON.stringify(e) : "An unknown error occurred.");
+
+      console.error("Vapi error:", {
+        error: e,
+        message: errorMessage,
+        config: getConfig(),
+        sessionContext,
+      });
 
       // Defensive: handle "meeting has ended"
       if (
@@ -95,6 +104,7 @@ const VapiWidget: React.FC<VapiWidgetProps> = ({
     };
 
     const handleMessage = (msg: any) => {
+      console.log("Received message:", msg);
       if (onMessageRef.current) onMessageRef.current(msg);
       if (msg?.role && msg?.content) {
         setTranscript((prev) => [
@@ -107,6 +117,7 @@ const VapiWidget: React.FC<VapiWidgetProps> = ({
         ]);
       }
       if (msg?.function_call) {
+        console.log("Function call received:", msg.function_call);
         setTranscript((prev) => [
           ...prev,
           {
@@ -142,12 +153,19 @@ const VapiWidget: React.FC<VapiWidgetProps> = ({
 
   // Always pass multi-turn config!
   const getConfig = () => {
-    if (sessionContext) return { ...config, ...sessionContext };
+    console.log("Getting config with sessionContext:", sessionContext);
+    console.log("Base config:", config);
+    if (sessionContext) {
+      const mergedConfig = { ...config, ...sessionContext };
+      console.log("Merged config:", mergedConfig);
+      return mergedConfig;
+    }
     return config;
   };
 
   const toggleCall = async () => {
     if (isConnected) {
+      console.log("Stopping call");
       vapiRef.current?.stop();
       return;
     }
@@ -162,9 +180,13 @@ const VapiWidget: React.FC<VapiWidgetProps> = ({
     setError(null);
 
     try {
-      await vapiRef.current?.start(assistantId, getConfig());
+      console.log("Starting call with assistantId:", assistantId);
+      const currentConfig = getConfig();
+      console.log("Using config:", currentConfig);
+      await vapiRef.current?.start(assistantId, currentConfig);
       setCallEnded(false);
     } catch (e: any) {
+      console.error("Failed to start call:", e);
       const errorMessage = e?.message || "Failed to start the call.";
       setError(errorMessage);
       setIsLoading(false);
@@ -182,7 +204,7 @@ const VapiWidget: React.FC<VapiWidgetProps> = ({
   const speakingPulse = isSpeaking ? "animate-pulse" : "";
 
   return (
-    <div className="flex flex-col items-center justify-center p-4 rounded-lg bg-gray-900/50">
+    <div className="flex flex-col items-center justify-center p-4 rounded-lg">
       <button
         onClick={toggleCall}
         disabled={buttonDisabled}

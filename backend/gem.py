@@ -8,12 +8,12 @@ from openai import OpenAI
 load_dotenv()
 
 try:
-    client = OpenAI(api_key=os.environ["OPENAI_API_KEY"])
+    client = OpenAI(api_key=os.environ["GEMINI_API_KEY"])
 except KeyError:
-    raise ValueError("OPENAI_API_KEY environment variable not set. Please add it to your .env file.")
+    raise ValueError("GEMINI_API_KEY environment variable not set. Please add it to your .env file.")
 
 
-MODEL_NAME = "gpt-4o-mini"
+MODEL_NAME = "gemini-2.0-flash-exp"
 
 app = Flask(__name__)
 
